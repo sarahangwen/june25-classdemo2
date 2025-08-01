@@ -1,53 +1,26 @@
 pipeline {
     agent any
 
-    environment {
-        VENV = 'venv'
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/your-username/your-repo.git'
+                git branch: 'main', url: 'https://github.com/michealotodi/https-github.com-munguriek-june25-classdemo2.git'
             }
         }
 
-        stage('Set Up Virtual Environment') {
+        stage('Setup Python Environment') {
             steps {
-                sh '''
-                    python3 -m venv $VENV
-                    source $VENV/bin/activate
-                    pip install --upgrade pip
-                    pip install -r requirements.txt
-                '''
+                sh 'python3 -m venv venv'
+                sh '. venv/bin/activate'
+                sh 'pip install --upgrade pip'
+                sh 'pip install -r requirements.txt'
             }
         }
 
-        stage('Run Tests') {
+         stage('Run Tests') {
             steps {
-                sh '''
-                    source $VENV/bin/activate
-                    pytest tests/  # change this if you use unittest or another framework
-                '''
+                sh '. venv/bin/activate && python manage.py test'
             }
-        }
-
-        stage('Clean Up') {
-            steps {
-                sh 'rm -rf $VENV'
-            }
-        }
-    }
-
-    post {
-        always {
-            echo 'Pipeline finished.'
-        }
-        success {
-            echo 'Build succeeded!'
-        }
-        failure {
-            echo 'Build failed.'
-        }
-    }
+        }
+    }
 }
