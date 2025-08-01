@@ -13,15 +13,14 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'  # or your project's version
+          python-version: '3.10'  
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install pylint
 
       - name: Run Django tests
         run: |
           python manage.py test
-
-      
